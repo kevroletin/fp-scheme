@@ -1,0 +1,147 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[russian]{babel}
+\author{Кевролетин В.В. 236гр.}
+\title{$\lambda$-исчисление (2 задание)}
+\begin{document}
+
+\maketitle
+
+\subsection*{Задание1}
+\subsubsection*{Условие}
+Показать, что ромбовидное сво-во не выполняется, если $\rightarrow $
+заменить на $ \twoheadrightarrow $.
+\subsubsection*{Решение}
+Возьмем терм $(\lambda x.xx)((\lambda z.z)y)$ и убедимся, проделав все возможные
+преобразования, что св-во не выполняется: \\
+\begin{enumerate}
+\item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta (\lambda
+  x.xx)(y) \longrightarrow_\beta (y)(y)$
+\item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta ((\lambda
+  z.z)y)((\lambda z.z)y) \longrightarrow_\beta ((\lambda z.z)y)(y)
+  \longrightarrow_\beta (y)(y)$
+\item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta ((\lambda
+  z.z)y)((\lambda z.z)y) \longrightarrow_\beta (y)((\lambda z.z)y)
+  \longrightarrow_\beta (y)(y)$
+\end{enumerate}
+
+\subsection*{Задание2}
+\subsubsection*{Условие}
+Доказать, что добавление аксиомы $\lambda xy.x = \lambda xy.y$,
+получим $\forall P,Q: P=Q$
+\subsubsection*{Решение}
+Подставим в качестве аргументов $PQ$ в праую и левую абстракцию:\\
+$(\lambda xy.x)PQ \longrightarrow_\beta P, $\\
+$(\lambda xy.y)PQ \longrightarrow_\beta Q, $\\
+но $(\lambda xy.x) = (\lambda xy.y)$, так что в силу свойств отношения
+$=$ имеем: P=Q, а в силу произвольности выбора P и Q, получаем
+равенство для $ \forall PQ $ \\
+
+\subsection*{Задание3}
+\subsubsection*{Условие}
+Показать, что операции умножения и возведения в степень выглядят
+следующим образом:\\
+$mult \equiv \lambda mnfx.m(nf)x$\\
+$expt \equiv \lambda mnfx.mnfx$
+\subsubsection*{Решение}
+\begin{enumerate}
+\item 
+$(mult\ m\ n) \longrightarrow \lambda fx.m(nf)x \longrightarrow 
+\lambda fx.\underbrace{nf(nf(\ldots \overbrace
+{nf(nfx}^\text{=n+n}}_\text{n times})\ldots) = \lambda
+fx.\underbrace{f(f(\ldots f(fx}_{n \cdot m\ times})\ldots) \equiv
+n\cdot m$ 
+
+\item
+ММИ:
+База:\\
+$(expt\ 0\ n) \longrightarrow \lambda fx.n0fx \longrightarrow \lambda
+fx.0f(0f(\ldots 0f)\ldots )x \longrightarrow \lambda fx.x \equiv 0 $ \\
+$(expt\ m\ n) \longrightarrow \lambda fx.0mfx \longrightarrow =>
+\lambda fx.fx \equiv 1$ \\
+Переход:\\
+$(expt\ m\ {n\!+\!1}) = (mult\ (expt\ m\ n)\ m) \longrightarrow (mult\
+(\lambda fx.nmfx)\ m) \longrightarrow \lambda fx.(\lambda
+fx.nmfx)(mf)x \longrightarrow \lambda fx.nm\bold{(mf)}x \longrightarrow
+\lambda fx.\overbrace{\underbrace{m(m(m(\ldots m}_{n\
+    times}\bold{(mf)}}^{n+1\ times}\ldots )x \longrightarrow^{-1}
+\lambda fx.{n\!+\!1}\, mfx \equiv  (expt\ m\ n+1)$
+\end{enumerate}
+
+\subsection*{Задание4}
+\subsubsection*{Условие}
+Показать: $(\lambda mn.m\,suc\,n)mn \longrightarrow m+n $
+\subsubsection*{Решение}
+ $(\lambda mn.m\,suc\,n)mn \longrightarrow m\,suc\,n
+\longrightarrow \underbrace{ suc(suc(suc \ldots suc(}_{m\ times}n)
+\ldots ) \longrightarrow \underbrace{ suc(suc \ldots suc(}_{m-1\
+  times}{n\!+\!1}) \ldots ) \longrightarrow n + m $
+\subsection*{Задание5}
+\subsubsection*{Условие}
+Показать, чт:о
+\begin{enumerate}
+\item $head(cons\ M\ N) \longrightarrow M$ 
+\item $tail(cons\ M\ N) \longrightarrow N$ 
+\end{enumerate}
+\subsubsection*{Решение}
+\begin{enumerate}
+\item
+ $head(cons\ M\ N) \longrightarrow head(pair\ false\ (pair\ M\
+ N)) \longrightarrow (first\ (second\ (pair\ false\ (pair\ M\
+ N)))) \longrightarrow (first\ (second\ (pair\ false\ (pair\ M\
+ N)))) \longrightarrow (first\ (pair\ M\
+ N)) \longrightarrow M $
+\item
+ $tail(cons\ M\ N) \longrightarrow tail(pair\ false\ (pair\ M\
+ N)) \longrightarrow (second\ (second\ (pair\ false\ (pair\ M\
+ N)))) \longrightarrow (second\ (second\ (pair\ false\ (pair\ M\
+ N)))) \longrightarrow (second\ (pair\ M\
+ N)) \longrightarrow M$ 
+\end{enumerate}
+
+\subsection*{Задание6}
+\subsubsection*{Условие}
+Представить натуральные числа при помощи списков. Ввести несколько операций.
+\subsubsection*{Решение}
+$0 - false \equiv \lambda z.z \\
+1 - (pair\ true\ false) \\
+\ldots \\
+n - (pair\ true\ {n\!-\!1})\\
+\\
+iszero \equiv \lambda z.(not\ (first\ z)) \\
+suc \equiv \lambda z.(pair\ true\ z) $ \\
+арифметеческие операции можно реализовать рекурсивными функциями
+
+
+
+\subsection*{Задание7}
+\subsubsection*{Условие}
+Функция Акермана имеет следующее рекурсивное определение: \\
+$ack\ 0\ n = n + 1 \\
+ack\ (m\,+\,1)\ 0 = ack\ m\ 1 \\
+ack\ (m\,+\,1)\ (m\,+\,1) = ack\ m (ack\ (m\,+\,1)\ n)$\\
+Показать, что функция Акермана в терминах $\lambda$ исчисления выглядит
+следующим образом:
+$ack \equiv \lambda m.m(\lambda fn.nf(f1))suc$
+\subsubsection*{Решение}
+\begin{enumerate}
+\item
+$ack\ 0\ n \equiv \lambda m.m(\lambda fn.nf(f1))suc\ 0\ n \rightarrow
+0(\lambda fn.nf(f1))suc\ n \rightarrow suc n \equiv (n\,+\,1)$
+\item
+$ack\ (m\,+\,1)\ n \rightarrow (\lambda m.m(\lambda fn.nf(f1))suc)\
+(m\,+\,1)\ n \rightarrow (m\,+\,1)(\lambda fn.nf(f1))suc\ n
+\rightarrow (\lambda fn.nf(f1))(m\ \lambda fn.nf(f1) suc) n = (\lambda
+fn.nf(f1))(ack m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ \item
+$ ack (m+1)\ 0 \rightarrow 0 (ack\ (m+1) (ack\ m\ 1) \rightarrow ack\
+m\ 1  $
+\item
+$ack(m+1)(n+1) \rightarrow n+1\ (ack\ m)(ack\ m\ n \rightarrow ack\
+m(n(ack\ m)(ack\ m\ 1))) = ack (ack(m+1)n)$
+\end{enumerate}
+
+\end{document}

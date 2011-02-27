@@ -1,0 +1,77 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[russian]{babel}
+\author{Кевролетин В.В. 236гр.}
+\title{$\lambda$-исчисление (3 задание)}
+\begin{document}
+
+\maketitle
+
+\subsection*{Задание1}
+\subsubsection*{Условие}
+Показать, что $\Theta{}$ - оператор неподвижной точки 
+\subsubsection*{Решение}
+
+$A \equiv \lambda xy.y(xxy) \\
+\Theta \equiv AA \\
+\Theta \ F = \lambda xy.y(xxy)\lambda xy.y(xxy)F \rightarrow F(\lambda
+xy.y(xxy)\lambda xy.y(xxy)F) = F \Theta F $
+
+\subsection*{Задание2}
+\subsubsection*{Условие}
+Показать, что $(first (second (zeros \ 1))) \twoheadrightarrow 0 $
+\subsubsection*{Решение}
+$
+zeros1 \equiv \Theta (pair\ 0) \twoheadrightarrow (pair\ 0 (pair\ 0 (
+\ldots \Theta (pair\ 0) \ldots ))) \equiv (pair\ 0\ zeros1)\\
+(first (second (zeros1))) = (first (second (pair (1 \ zeros))))
+\rightarrow  (first (second(\lambda f.f(1 \ zeros)))) \rightarrow
+(first ((\lambda p.p \ false)\lambda f.f(1 \ zeros))) \rightarrow
+(first ((\lambda f.f(1 \ zeros ) false))) \rightarrow (first (false\
+1\ zeros)) \rightarrow (first\ zeros) \rightarrow 1$
+
+\subsection*{Задание3}
+\subsubsection*{Условие}
+Определены ли термы? \\
+Y\\
+Y not\\
+K\\
+YI\\
+x$\Omega$\\
+YK\\
+Y(Kx)\\
+n\\
+\subsubsection*{Решение}
+\begin{enumerate}
+\item
+$Y \equiv \lambda f.(\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow
+\lambda f.f(\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow \ldots $\\
+не определён
+\item
+$Y\ not \rightarrow not\ Y\ not \rightarrow \ldots$ \\
+не определён
+\item
+$K \equiv \lambda xy.x$ - в головной нормальной форме\\
+определён
+\item
+$Y\,I \rightarrow I\ Y\ I \rightarrow Y\ I\ \rightarrow \ldots$\\
+не определён
+\item
+$x \Omega $ - $\Omega$ не имеет нормальной формы\\
+не определён
+\item
+$YK \rightarrow K(YK) \rightarrow K(K(YK)) \rightarrow \ldots  $\\
+не определён
+\item
+$Y(Kx) \rightarrow Kx(Y(Kx)) \rightarrow x$\\
+определён
+\item
+$n$ \\
+определён
+\end{enumerate}
+
+\end{document}
