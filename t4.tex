@@ -1,0 +1,111 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[russian]{babel}
+\usepackage{listings}
+\author{Кевролетин В.В. 236гр.}
+\title{$\lambda$-исчисление}
+\begin{document}
+
+\maketitle
+
+\subsection*{Задание13}
+\subsubsection*{Условие}
+Если мы определим следующую процедуру:
+\begin{lstlisting}
+(define (f g)
+  (g 2))
+\end{lstlisting}
+Что случиться, если мы попробуем выполнить следующее выражение:
+\begin{lstlisting}
+  (f f)
+\end{lstlisting}
+
+\subsubsection*{Решение}
+Произойдёт ошибка, потому что f принимает в качестве аргумента функцию
+1 аргумента, и применяет её к числу. \\
+(f f) $\rightarrow $ (f 2) $\rightarrow$ (2 2) $\rightarrow$ ошибка
+
+\subsection*{Задание14}
+\subsubsection*{Условие}
+last-pair
+\subsubsection*{Решение}
+
+\begin{lstlisting}
+(define (last-pair list)
+  (if (null? (cdr list)) (car list)
+      (last-pair (cdr list))))
+\end{lstlisting}
+
+\subsection*{Задание15}
+\subsubsection*{Условие}
+reverse
+\subsubsection*{Решение}
+
+\begin{lstlisting}
+(define (reverse-rec list res)
+  (if (null? list) res
+      (reverse-rec (cdr list) (cons (car list) res))))
+
+(define (reverse list)
+  (reverse-rec list '()))
+\end{lstlisting}
+
+\subsection*{Задание16}
+\subsubsection*{Условие}
+same-parity
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define (xor a b) (or (and a (not b)) (and b (not a))))
+(define (equiv a b) (not (xor a b)))
+
+(define (same-parity list)
+  (filter
+   (lambda (a) (equiv (even? (car list)) (even? a)))
+   list))
+\end{lstlisting}
+
+\subsection*{Задание17}
+deep-reverse
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define (deep-reverse list)
+  (reverse 
+   (map
+    (lambda (elem)
+      (if (pair? elem) (deep-reverse elem) elem))
+    list)))
+\end{lstlisting}
+
+\subsection*{Задание18}
+\subsubsection*{Условие}
+fringe
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define (fringe data)
+  (if (not (pair? data)) (if (null? data) '()  (list data))
+      (foldr
+       (lambda (elem res) (append (fringe elem) res))
+       '()
+       data)))
+\end{lstlisting}
+
+\subsection*{Задание19}
+\subsubsection*{Условие}
+tree-map
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define (tree-map funct tree)
+  (if (not (pair? tree)) (funct tree)
+      (map (lambda (elem) (tree-map funct elem))
+           tree)))
+\end{lstlisting}
+
+
+
+
+\end{document}

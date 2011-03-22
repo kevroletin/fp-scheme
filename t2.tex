@@ -5,13 +5,14 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[russian]{babel}
+\usepackage{listings}
 \author{Кевролетин В.В. 236гр.}
-\title{$\lambda$-исчисление (2 задание)}
+\title{$\lambda$-исчисление}
 \begin{document}
 
 \maketitle
 
-\subsection*{Задание1}
+\subsection*{Задание4}
 \subsubsection*{Условие}
 Показать, что ромбовидное сво-во не выполняется, если $\rightarrow $
 заменить на $ \twoheadrightarrow $.
@@ -20,16 +21,16 @@
 преобразования, что св-во не выполняется: \\
 \begin{enumerate}
 \item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta (\lambda
-  x.xx)(y) \longrightarrow_\beta (y)(y)$
+  x.xx)y \longrightarrow_\beta yy$
 \item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta ((\lambda
-  z.z)y)((\lambda z.z)y) \longrightarrow_\beta ((\lambda z.z)y)(y)
-  \longrightarrow_\beta (y)(y)$
+  z.z)y)((\lambda z.z)y) \longrightarrow_\beta ((\lambda z.z)y)y
+  \longrightarrow_\beta yy$
 \item $(\lambda x.xx)((\lambda z.z)y) \longrightarrow_\beta ((\lambda
-  z.z)y)((\lambda z.z)y) \longrightarrow_\beta (y)((\lambda z.z)y)
-  \longrightarrow_\beta (y)(y)$
+  z.z)y)((\lambda z.z)y) \longrightarrow_\beta y((\lambda z.z)y)
+  \longrightarrow_\beta yy$
 \end{enumerate}
 
-\subsection*{Задание2}
+\subsection*{Задание5}
 \subsubsection*{Условие}
 Доказать, что добавление аксиомы $\lambda xy.x = \lambda xy.y$,
 получим $\forall P,Q: P=Q$
@@ -41,7 +42,7 @@ $(\lambda xy.y)PQ \longrightarrow_\beta Q, $\\
 $=$ имеем: P=Q, а в силу произвольности выбора P и Q, получаем
 равенство для $ \forall PQ $ \\
 
-\subsection*{Задание3}
+\subsection*{Задание6}
 \subsubsection*{Условие}
 Показать, что операции умножения и возведения в степень выглядят
 следующим образом:\\
@@ -57,22 +58,14 @@ fx.\underbrace{f(f(\ldots f(fx}_{n \cdot m\ times})\ldots) \equiv
 n\cdot m$ 
 
 \item
-ММИ:
-База:\\
-$(expt\ 0\ n) \longrightarrow \lambda fx.n0fx \longrightarrow \lambda
-fx.0f(0f(\ldots 0f)\ldots )x \longrightarrow \lambda fx.x \equiv 0 $ \\
-$(expt\ m\ n) \longrightarrow \lambda fx.0mfx \longrightarrow =>
-\lambda fx.fx \equiv 1$ \\
-Переход:\\
-$(expt\ m\ {n\!+\!1}) = (mult\ (expt\ m\ n)\ m) \longrightarrow (mult\
-(\lambda fx.nmfx)\ m) \longrightarrow \lambda fx.(\lambda
-fx.nmfx)(mf)x \longrightarrow \lambda fx.nm\bold{(mf)}x \longrightarrow
-\lambda fx.\overbrace{\underbrace{m(m(m(\ldots m}_{n\
-    times}\bold{(mf)}}^{n+1\ times}\ldots )x \longrightarrow^{-1}
-\lambda fx.{n\!+\!1}\, mfx \equiv  (expt\ m\ n+1)$
+$
+(expt\ n\ m) \equiv (\lambda mnfx.mnfx) \rightarrow 
+(\lambda mnfx.m^nfx) \equiv m^n
+$
+
 \end{enumerate}
 
-\subsection*{Задание4}
+\subsection*{Задание7}
 \subsubsection*{Условие}
 Показать: $(\lambda mn.m\,suc\,n)mn \longrightarrow m+n $
 \subsubsection*{Решение}
@@ -80,7 +73,7 @@ fx.nmfx)(mf)x \longrightarrow \lambda fx.nm\bold{(mf)}x \longrightarrow
 \longrightarrow \underbrace{ suc(suc(suc \ldots suc(}_{m\ times}n)
 \ldots ) \longrightarrow \underbrace{ suc(suc \ldots suc(}_{m-1\
   times}{n\!+\!1}) \ldots ) \longrightarrow n + m $
-\subsection*{Задание5}
+\subsection*{Задание8}
 \subsubsection*{Условие}
 Показать, чт:о
 \begin{enumerate}
@@ -103,7 +96,7 @@ fx.nmfx)(mf)x \longrightarrow \lambda fx.nm\bold{(mf)}x \longrightarrow
  N)) \longrightarrow M$ 
 \end{enumerate}
 
-\subsection*{Задание6}
+\subsection*{Задание9}
 \subsubsection*{Условие}
 Представить натуральные числа при помощи списков. Ввести несколько операций.
 \subsubsection*{Решение}
@@ -111,14 +104,14 @@ $0 - false \equiv \lambda z.z \\
 1 - (pair\ true\ false) \\
 \ldots \\
 n - (pair\ true\ {n\!-\!1})\\
-\\
 iszero \equiv \lambda z.(not\ (first\ z)) \\
-suc \equiv \lambda z.(pair\ true\ z) $ \\
-арифметеческие операции можно реализовать рекурсивными функциями
+suc \equiv \lambda z.(pair\ true\ z) \\
+sum \equiv Y(\lambda\ gmn.(if\ (fst\ n)\ (pair\ (fst\ n)\ (g\ (snd\ n)\
+m))\ m)) \\
+$
 
 
-
-\subsection*{Задание7}
+\subsection*{Задание10}
 \subsubsection*{Условие}
 Функция Акермана имеет следующее рекурсивное определение: \\
 $ack\ 0\ n = n + 1 \\
@@ -126,21 +119,21 @@ ack\ (m\,+\,1)\ 0 = ack\ m\ 1 \\
 ack\ (m\,+\,1)\ (m\,+\,1) = ack\ m (ack\ (m\,+\,1)\ n)$\\
 Показать, что функция Акермана в терминах $\lambda$ исчисления выглядит
 следующим образом:
-$ack \equiv \lambda m.m(\lambda fn.nf(f1))suc$
+$ack \equiv \lambda m.m(\lambda fn.nf(f\ 1))suc$
 \subsubsection*{Решение}
 \begin{enumerate}
 \item
-$ack\ 0\ n \equiv \lambda m.m(\lambda fn.nf(f1))suc\ 0\ n \rightarrow
-0(\lambda fn.nf(f1))suc\ n \rightarrow suc n \equiv (n\,+\,1)$
+$ack\ 0\ n \equiv \lambda m.m(\lambda fn.nf(f\ 1))suc\ 0\ n \rightarrow
+0(\lambda fn.nf(f\ 1))suc\ n \rightarrow suc n \equiv (n\,+\,1)$
 \item
-$ack\ (m\,+\,1)\ n \rightarrow (\lambda m.m(\lambda fn.nf(f1))suc)\
-(m\,+\,1)\ n \rightarrow (m\,+\,1)(\lambda fn.nf(f1))suc\ n
-\rightarrow (\lambda fn.nf(f1))(m\ \lambda fn.nf(f1) suc) n = (\lambda
-fn.nf(f1))(ack m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ \item
-$ ack (m+1)\ 0 \rightarrow 0 (ack\ (m+1) (ack\ m\ 1) \rightarrow ack\
+$ack\ (m\,+\,1)\ n \rightarrow (\lambda m.m(\lambda fn.nf(f\ 1))suc)\
+(m\,+\,1)\ n \rightarrow (m\,+\,1)(\lambda fn.nf(f\ 1))suc\ n
+\rightarrow (\lambda fn.nf(f\ 1))(m\ \lambda fn.nf(f\ 1) suc) n = (\lambda
+fn.nf(f\ 1))(ack\ m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ \item
+$ ack (m+1)\ 0 \rightarrow 0 ack\ (m+1) (ack\ m\ 1) \rightarrow ack\
 m\ 1  $
 \item
-$ack(m+1)(n+1) \rightarrow n+1\ (ack\ m)(ack\ m\ n \rightarrow ack\
+$ack(m+1)(n+1) \rightarrow n+1\ (ack\ m)(ack\ m\ n) \rightarrow ack\
 m(n(ack\ m)(ack\ m\ 1))) = ack (ack(m+1)n)$
 \end{enumerate}
 
