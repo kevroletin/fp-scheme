@@ -119,14 +119,19 @@
         ((variable? exp)
          (if (same-variable? exp var) 1 0))
         ((sum? exp)
-         (make-sum (deriv (addend exp) var)
-                   (deriv (augend exp) var)))
+         (cons '+
+               (foldr (lambda (x y) (cons (deriv x var) y))
+                      '()  (sum-args exp))))
         ((product? exp)
          (make-sum
-           (make-product (multiplier exp)
-                         (deriv (multiplicand exp) var))
-           (make-product (deriv (multiplier exp) var)
-                         (multiplicand exp))))
+           (make-product (deriv (product-first-arg exp) var)
+                         (product-last-args exp))
+           (make-product (product-first-arg exp)
+                         (deriv (product-last-args exp) var))))
+        ((power? exp)
+         (make-product
+           (make-power (power-get-arg exp) (- (power-get-pow exp) 1))
+           (deriv (power-get-arg exp) var)))
         (else
          (error "unknown expression type -- DERIV" exp))))
 
@@ -135,20 +140,42 @@
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2)))
 
-(define (make-sum a1 a2) (list '+ a1 a2))
-
-(define (make-product m1 m2) (list '* m1 m2))
-
+(define (make-sum a1 . a2) (append (list '+ a1) a2))
 (define (sum? x)
   (and (pair? x) (eq? (car x) '+)))
+(define (sum-args s) (cdr s))
+(define (sum-first-arg s) (car (sum-args s)))
+(define (sum-last-args s) (cdr (sum-args s)))
 
-(define (addend s) (cadr s))
+(define s (make-sum 1 2 3))
+(sum-args s) ;; > (1 2 3)
 
-(define (augend s) (caddr s))
 
+(define (make-product m1 . m2) (append (list '* m1) m2))
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
+(define (product-args p) (cdr p))
+(define (product-first-arg s) (car (product-args s)))
+(define (product-last-args s)
+  (let ((tail (cdr (product-args s))))
+    (if (>= (length tail) 2)
+        (cons '* tail)
+        (car tail))))
 
-(define (multiplier p) (cadr p))
+(define p (make-product 1 2 3))
+(product-args p)                          ;; > (1 2 3)
+(product-first-arg p)                     ;; > 1
+(product-last-args p)                     ;; > (* 2 3)
+(product-last-args (product-last-args p)) ;; >3
 
-(define (multiplicand p) (caddr p))
+(define (make-power num pow) (list '^ num pow))
+
+(define (power? x)
+  (and (pair? x) (eq? (car x) '^)))
+
+(define (power-get-arg p) (cadr p))
+(define  (power-get-pow p)  (caddr p))
+
+(deriv (make-sum 'x 'x 1) 'x)   ;; > (+ 1 1 0)
+(deriv (make-product 'x 'x) 'x) ;; > (+ (* 1 x) (* x 1))
+
