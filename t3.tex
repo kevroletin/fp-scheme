@@ -1,3 +1,4 @@
+
 \documentclass[10pt,a4paper]{article}
 \usepackage[utf8x]{inputenc}
 \usepackage{ucs}
@@ -18,8 +19,9 @@
 
 $A \equiv \lambda xy.y(xxy) \\
 \Theta \equiv AA \\
-\Theta \ F = \lambda xy.y(xxy)\lambda xy.y(xxy)F \rightarrow F(\lambda
-xy.y(xxy)\lambda xy.y(xxy)F) = F \Theta F $
+\Theta \ F = (\lambda xy.y(xxy))(\lambda xy.y(xxy))F
+\rightarrow_\beta 
+F((\lambda xy.y(xxy))(\lambda xy.y(xxy))F) \equiv F (\Theta F) $
 
 \subsection*{Задание11}
 \subsubsection*{Условие}
@@ -33,84 +35,53 @@ YK\\
 Y(Kx)\\
 n\\
 \subsubsection*{Решение}
-
-Терм определён тогда и только тогда, когда он может быть редуцирован к
-головной нормальной форме; иначе неопределён. \\
-Терм M разрешим тогда и только тогда, когда существуют переменные $x_1,
-... x_m $ и термы $N_1, ... N_n$ такие, что $(\lambda x_1
-... x_m.M)N_1 ... N_n = I $ \\
-Сперва отметим, что: \\
- - если M = xM, то M не имеет нормальной формы. \\
- - если M = PM, то M не имеет нормальной формы, если $ P \not = I $ и \\
- P не функция 1 аргумента, возвращающая M. \\
- - все, что определено при помощи Y не имеет нормальной формы.
-
+Терм определён тогда и только тогда, когда он может быть приведён к
+головной нормальной форме.\\
+Терм в головной нормальной форме имеет вид $\lambda x_1
+... x_n.yM_1..M_k\ (m, k >= 0)$ 
 \begin{enumerate}
 \item
-$Y \equiv \lambda f.(\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow
+$Y \equiv (\lambda f.\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow
 \lambda f.f(\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow \ldots $\\
 не определён \\
-$Y\lambda z.y \rightarrow (\lambda z.y)(Y\lambda z.y) \rightarrow y $ \\
-$(\lambda y.y)I \rightarrow I$
-разрешим 
 \item
 $Y\ not \rightarrow not\ ( Y\ not) \rightarrow \ldots$ \\
 не определён \\
-$Y\ not\ N \rightarrow not(Y\ not)\ N \rightarrow \ldots $ \\
-не разрешим
 \item
 $K \equiv \lambda xy.x$ - в головной нормальной форме\\
 определён \\
-$K\ I\ N= (\lambda xy.x)\ I\ N \rightarrow I$
-разрешим
 \item
-$Y\,I \rightarrow I\ (Y\ I) \rightarrow Y\ I\ \rightarrow \ldots$\\
+$Y\ I \rightarrow I\ (Y\ I) \rightarrow Y\ I\ \rightarrow \ldots$\\
 не определён \\
-$Y\,I\ N \rightarrow I\ (Y\ I) N \rightarrow Y\ I\ N \rightarrow \ldots$\\
-не разрешим
 \item
 $x \Omega $ \\
 $\Omega$ не имеет нормальной формы\\
 не определён \\
-$(\lambda x.x \Omega)\lambda z.I \rightarrow I $ \\
-разрешим
 \item
 $YK \rightarrow K(YK) \rightarrow K(K(YK)) \rightarrow \ldots  $\\
 не определён \\
-$YK x_1x_2...x_n \rightarrow 
-K(YK) x_1x_2...x_n \rightarrow 
-K(K(YK)) x_1x_2...x_n  \rightarrow  
-K(K(YK)) x_2...x_n  \rightarrow
-\ldots \rightarrow
-YK
-$\\
-не разрешим
 \item
-$Y(Kx)$ определён с использованием оператора Y\\
-не определён \\
-$Y(Kx) \rightarrow Kx(Y(Kx)) \rightarrow x$\\
-$(\lambda x.x)I \rightarrow I$
-разрешим
+$Y(K\ x) \rightarrow K\ x\ (Y\ (K\ x)) \rightarrow x$ \\
+определён \\
 \item
 $n$ - в нормальной форме \\
 определён \\
-$nII \equiv (\lambda fx.f^nx)II \rightarrow I^nI \rightarrow I $ \\
-разрешим
-
 \end{enumerate}
 
 \subsection*{Задание12}
 \subsubsection*{Условие}
-Показать, что $(first (second (zeros \ 1))) \twoheadrightarrow 0 $
+Показать, что $(first (second (zeros1))) \twoheadrightarrow 0 $
 \subsubsection*{Решение}
 $
-zeros1 \equiv \Theta (pair\ 0) \twoheadrightarrow (pair\ 0 (pair\ 0 (
-\ldots \Theta (pair\ 0) \ldots ))) \equiv (pair\ 0\ zeros1)\\
-(first (second (zeros1))) = (first (second (pair (1 \ zeros))))
-\rightarrow  (first (second(\lambda f.f(1 \ zeros)))) \rightarrow
-(first ((\lambda p.p \ false)\lambda f.f(1 \ zeros))) \rightarrow
-(first ((\lambda f.f(1 \ zeros ) false))) \rightarrow (first (false\
-1\ zeros)) \rightarrow (first\ zeros) \rightarrow 1$
+zeros1 \equiv \Theta (pair\ 0) \rightarrow (pair\ 0\ (\Theta (pair\
+0))) 
+\equiv (pair\ 0\ zeros1)\\
+(first (second (zeros1))) = (first (second (pair (0 \ zeros1))))
+\rightarrow  (first\ (second\ (\lambda f.f(0 \ zeros1)))) \rightarrow
+(first ((\lambda p.p \ false)\lambda f.f(0 \ zeros1))) \rightarrow
+(first ((\lambda f.f(0 \ zeros1) false))) \rightarrow (first (false\
+0\ zeros1)) \rightarrow (first\ zeros1) \rightarrow (first\ (pair\ 0\
+zeros1)) \rightarrow 0$
 
 
 \end{document}
