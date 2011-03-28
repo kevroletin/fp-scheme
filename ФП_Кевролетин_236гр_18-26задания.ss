@@ -111,6 +111,9 @@
 
 (equal? '(this is a list) '(this is a list))
 (equal? '(this is a list) '(this (is a) list))
+(equal? '(1 2) '(1 2)) ; > #t
+(equal? '(1 2) '(2 1)) ; > #f
+(equal? '(1 2 3) '(1 2)) ; > #f
 
 ;; 24
 
@@ -179,3 +182,48 @@
 (deriv (make-sum 'x 'x 1) 'x)   ;; > (+ 1 1 0)
 (deriv (make-product 'x 'x) 'x) ;; > (+ (* 1 x) (* x 1))
 
+(define (check-for-oper x op)
+  (and
+   (not (null? x))
+   (not (null? (cdr x)))
+   (eq? (cadr x) op)))
+
+(define (mult? x)
+  (check-for-oper x '*))
+
+(define (sum? x)
+  (check-for-oper x '+))
+
+(define (select-mult p)
+  (define (iter l res)
+    (if (not (mult? l)) (cons (car l) res)
+        (iter (cddr l) (cons '* (cons (car l) res)))))
+  (iter p '()))
+
+(define (select-after-mult p)
+  (define (iter l res)
+    (if (not (mult? l)) (cddr p)
+        (iter (cddr l) (cons '* (cons (car l) res)))))
+  (iter p '()))
+
+(define (variable? x)
+  (and (not (null? x))
+       (null? (cdr x))
+       (symbol? (car x))))
+
+(define (same-variable? v1 v2)
+  (and (variable? v1) (variable? v2) (eq? v1 v2)))
+
+(define (make-sum l1 l2)
+  (append l1 (list '+) l2))
+
+(define (make-mult l1 l2)
+  (append l1 (list '*) l2))
+
+(mult? '(1 * 2 * 3 + 5))
+(select-mult '(1 * 2 * 3)) 
+
+(cadr '(1 2 3))
+(cddr '(1 2 3))
+(cadr '(1 2))
+(variable? (list 'x))

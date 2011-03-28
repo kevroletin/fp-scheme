@@ -205,9 +205,41 @@ b. The problem becomes substantially harder if we allow standard algebraic notat
 (define (multiplicand p) (caddr p))
 
 \end{lstlisting}
-б) Ответ: нет, нельзя придумать предикаты и селекторы, так чтобы наша
-программа работала. Можно перевести входные данные в префексную
-нотацию и запустить на преобразованных данных наш алгоритм, или
-использовать алгоритм рекурсивного спуска для разбора подобных выражений.
+б) Ответ: да, дейвствительно, можно.
+Для этого потребуется добавить более сложный селектор, который выбирает из списка не один элемент, а все сомножители произведения. И селектор, выбирающий оставшуюся часть.
+
+\begin{lstlisting}
+(define (make-sum l1 l2)
+  (append l1 (list '+) l2))
+
+(define (make-mult l1 l2)
+  (append l1 (list '*) l2))
+
+(define (check-for-oper x op)
+  (and
+   (not (null? x))
+   (not (null? (cdr x)))
+   (eq? (cadr x) op)))
+
+(define (mult? x)
+  (check-for-oper x '*))
+
+(define (sum? x)
+  (or (check-for-oper x '+)
+      (and (pair? x)
+      (null? (cdr x)))))
+
+(define (select-mult p)
+  (define (iter l res)
+    (if (not (mult? l)) (cons (car l) res)
+        (iter (cddr l) (cons '* (cons (car l) res)))))
+  (iter p '()))
+
+(define (select-after-mult p)
+  (define (iter l res)
+    (if (not (mult? l)) (cddr p)
+        (iter (cddr l) (cons '* (cons (car l) res)))))
+  (iter p '()))
+\end{lstlisting}
 
 \end{document}
