@@ -1,0 +1,306 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[cm]{fullpage}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[russian]{babel}
+\usepackage{listings}
+\author{Кевролетин В.В. 236гр.}
+\title{$\lambda$-исчисление}
+\begin{document}
+
+\maketitle
+
+\subsection*{Задание31}
+Привести пример функции $f:N\rightarrow N$, которая обладает свойством
+$f(1)+f(2)\not =f(2)+f(1)$. Объяснить причину такого поведения.
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define count 0)
+
+(define (f x)
+  (set! count (* (+ count x) x))
+  count)
+\end{lstlisting}
+
+Результат, возвращаемый описанной выше функции f(x) зависит от
+глобальной переменной
+count, значение которой меняется в теле этой же функции. Поэтому
+результат функции зависит не только от переданного ей аргумента, но и
+от
+последовательности предыдущих вызовов f(x).
+$f(1)+f(2)\not =f(2)+f(1)$ несмотря на коммутативность сложения,
+потому что в первом случае сначала вычисляется f(1) а потом f(2), а во
+втором случае наоборот.
+
+\subsection*{Задание32}
+\subsubsection*{Условие}
+In the make-withdraw procedure, the local variable balance is created as a parameter of make-withdraw. We could also create the local state variable explicitly, using let, as follows:
+\begin{lstlisting}
+(define (make-withdraw initial-amount)
+  (let ((balance initial-amount))
+    (lambda (amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))))
+\end{lstlisting}
+Show that the two versions of make-withdraw create objects with the same behavior. How do the environment structures differ for the two versions?
+\subsubsection*{Решение}
+
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+frame=single
+}
+\begin{lstlisting}
+
+       +----------------------------------------------------+
+global |                                                    |
+env    | make-withdraw----+                                 |
+       |                  |                                 |
+       |                  |                                 |
+       +------------------|---------------------------------+
+                          |       ^
+                          |      /|\
+                          |       |
+                         \|/      |
+                          '       |
+                 parameters: initial-amount
+                 body:(let ((balance initial-amount))
+                        (lambda (amount)
+                          (if (>= balance amount)
+                             (begin (set! balance (- balance amount))
+                                    balance)
+                             "Insufficient funds"))))
+
+\end{lstlisting}
+
+После выполнения (define W1 (make-withdraw 100)) будет создан объект
+w1. Ниже на схеме изображено состояние окружения после сознания w1. На
+схеме видно, что полученный объект не отличается от созданного в 1 версии.
+
+\begin{lstlisting}
+
+       +----------------------------------------------------+
+global | make-withdraw ...                                  |   /
+env    |                                                    |  <----------------+
+       | w1---+                                             |   \               |
+       |      |                                             |                   |
+       +------|---------------------------------------------+                   |
+              |                                                  +---------+    |
+              |    +----------------------------------------+    |         |    |
+              |    |                                       \|/   |        \|/   |
+             \|/   |                                        '    |         '    |
+              '    |                                      +---------+ +---------------+
+ parameters: initial-amount                               | balance:| | initial-amount|
+ body:                                                    |   100   | |      100      |
+                                                          +---------+ +---------------+
+       (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))))
+
+\end{lstlisting}
+
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+frame=none
+}
+
+
+\subsection*{Задание33}
+\subsubsection*{Условие}
+make-cycle
+\subsubsection*{Решение}
+
+Было:
+\begin{lstlisting}
+
+      +---+---+       +---+---+       +---+---+
+z-->  |   |   +---->  |   |   +---->  |   |   +---->  nil
+      +-+-+---+       +-+-+---+       +-+-+---+
+        |               |               |
+       \|/             \|/             \|/
+        '               '               '
+        a               b               c
+
+\end{lstlisting}
+
+Станет:
+\begin{lstlisting}
+
+        +------------------------------------------+
+        |                                          |
+       \|/                                         |
+        '                                          |
+      +---+---+       +---+---+       +---+---+    |
+z-->  |   |   +---->  |   |   +---->  |   |   +----+
+      +-+-+---+       +-+-+---+       +-+-+---+
+        |               |               |
+       \|/             \|/             \|/
+        '               '               '
+        a               b               c
+
+\end{lstlisting}
+
+Вызов (last-pair z) приведёт к зацикливанию выполнения программы,
+т.к. условие (null? x) не выполняется не для одного элемента списка.
+
+\subsection*{Задание34}
+\subsubsection*{Условие}
+mystery
+\begin{lstlisting}
+(define (mystery x)
+  (define (loop x y)
+    (if (null? x)
+        y
+        (let ((temp (cdr x)))
+          (set-cdr! x y)
+          (loop temp x))))
+  (loop x '()))
+\end{lstlisting}
+\subsubsection*{Решение}
+Процедура изменяет переданный ей агрумент-список и позвращает его в
+качестве результата. Изменения проще всего показать на примере: пусть
+сначала мы имеем список (a b c d) тогда последовательно к этой
+последовательности будут добавлены все её несобственные  суффиксы
+начиная с самого длинного: \\
+(a b c d)               ;; исходная последовательность \\
+(a b c d b c d)         ;; добавили (b c d) \\
+(a b c d b c d c d)     ;; добавили (с d) \\
+(a b c d b c d c d d)   ;; добавили (d) \\
+
+\begin{lstlisting}
+
+       +---+---+       +---+---+       +---+---+       +---+---+
+v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  nil
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
+         |               |               |               |
+        \|/             \|/             \|/             \|/
+         '               '               '               '
+         a               b               c               d
+
+
+       +---+---+       +---+---+       +---+---+       +---+---+
+v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---+
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+   |
+         |               |               |               |         |
+        \|/             \|/             \|/             \|/        |
+         '               '               '               '         |
+         a               b               c               d         |
+                +--------------------------------------------------+
+                |
+                |      +---+---+       +---+---+       +---+---+
+                +--->  |   |   +---->  |   |   +---->  |   |   +---+
+                       +-+-+---+       +-+-+---+       +-+-+---+   |
+                         |               |               |         |
+                        \|/             \|/             \|/        |
+                         '               '               '         |
+                         b               c               d         |
+                               +-----------------------------------+
+                               |
+                               |       +---+---+       +---+---+
+                               +---->  |   |   +---->  |   |   +---+
+                                       +-+-+---+       +-+-+---+   |
+                                         |               |         |
+                                        \|/             \|/        |
+                                         '               '         |
+                                         c               d         |
+                                               +-------------------+
+                                               |
+                                               |       +---+---+
+                                               +---->  |   |   +---->  nil
+                                                       +-+-+---+
+                                                         |
+                                                        \|/
+                                                         '
+                                                         d
+
+
+\end{lstlisting}
+
+\subsection*{Задание35}
+\subsubsection*{Условие}
+count-pairs             
+\subsubsection*{Решение}
+3                       
+\begin{lstlisting}      
+                        
+ +---+---+       +---+---+       +---+---+
+ |   |   +---->  |   |   +---->  |   |   +---->  nil
+ +-+-+---+       +-+-+---+       +-+-+---+
+   |               |               |
+  \|/             \|/             \|/
+   '               '               '
+   a               b               c
+                        
+\end{lstlisting}        
+4                       
+\begin{lstlisting}      
+                   +---------------+
+                   |              \|/
+                   |               '
+ +---+---+       +-+-+---+       +---+---+
+ |   |   +---->  |   |   +---->  |   |   +---->  nil
+ +-+-+---+       +-+-+---+       +-+-+---+
+   |                               |
+  \|/                             \|/
+   '                               '
+   a                               c
+                        
+\end{lstlisting}        
+7                       
+\begin{lstlisting}      
+                        
+                   +---------------+
+                   |              \|/
+                   |               '
+ +---+---+       +-+-+---+       +---+---+
+ |   |   +---->  |   |   +---->  |   |   +---->  nil
+ +-+-+---+       +---+---+       +-+-+---+
+   |               ^               |
+   |              /|\             \|/
+   +---------------+               '
+                                   c
+                        
+\end{lstlisting}        
+Никогда не завершится   
+\begin{lstlisting}      
+   +----------------------------------------+
+  \|/                                       |
+   '                                        |
+ +---+---+       +---+---+       +---+---+  |
+ |   |   +---->  |   |   +---->  |   |   +--+
+ +-+-+---+       +-+-+---+       +-+-+---+
+   |               |               |
+  \|/             \|/             \|/
+   '               '               '
+   a               b               c
+                        
+\end{lstlisting}        
+                        
+                        
+                        
+\subsection*{Задание}   
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+\end{lstlisting}
+
+\subsection*{Задание}   
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+\end{lstlisting}
+
+\subsection*{Задание}   
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+\end{lstlisting}
+
+
+\end{document}
