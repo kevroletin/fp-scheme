@@ -38,7 +38,9 @@ $f(1)+f(2)\not =f(2)+f(1)$ несмотря на коммутативность 
 
 \subsection*{Задание32}
 \subsubsection*{Условие}
-In the make-withdraw procedure, the local variable balance is created as a parameter of make-withdraw. We could also create the local state variable explicitly, using let, as follows:
+In the make-withdraw procedure, the local variable balance is created
+as a parameter of make-withdraw. We could also create the local state
+variable explicitly, using let, as follows:
 \begin{lstlisting}
 (define (make-withdraw initial-amount)
   (let ((balance initial-amount))
@@ -48,7 +50,9 @@ In the make-withdraw procedure, the local variable balance is created as a param
                  balance)
           "Insufficient funds"))))
 \end{lstlisting}
-Show that the two versions of make-withdraw create objects with the same behavior. How do the environment structures differ for the two versions?
+Show that the two versions of make-withdraw create objects with the
+same behavior. How do the environment structures differ for the two
+versions?
 \subsubsection*{Решение}
 
 \lstset{ %
@@ -120,7 +124,7 @@ make-cycle
 \begin{lstlisting}
 
       +---+---+       +---+---+       +---+---+
-z-->  |   |   +---->  |   |   +---->  |   |   +---->  nil
+z-->  |   |   +---->  |   |   +---->  |   |   +---->  null
       +-+-+---+       +-+-+---+       +-+-+---+
         |               |               |
        \|/             \|/             \|/
@@ -163,20 +167,12 @@ mystery
   (loop x '()))
 \end{lstlisting}
 \subsubsection*{Решение}
-Процедура изменяет переданный ей агрумент-список и позвращает его в
-качестве результата. Изменения проще всего показать на примере: пусть
-сначала мы имеем список (a b c d) тогда последовательно к этой
-последовательности будут добавлены все её несобственные  суффиксы
-начиная с самого длинного: \\
-(a b c d)               ;; исходная последовательность \\
-(a b c d b c d)         ;; добавили (b c d) \\
-(a b c d b c d c d)     ;; добавили (с d) \\
-(a b c d b c d c d d)   ;; добавили (d) \\
+Процедура делает то же самое что и reverce
 
 \begin{lstlisting}
 
        +---+---+       +---+---+       +---+---+       +---+---+
-v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  nil
+v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  null
        +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
          |               |               |               |
         \|/             \|/             \|/             \|/
@@ -185,90 +181,62 @@ v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  nil
 
 
        +---+---+       +---+---+       +---+---+       +---+---+
-v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---+
-       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+   |
-         |               |               |               |         |
-        \|/             \|/             \|/             \|/        |
-         '               '               '               '         |
-         a               b               c               d         |
-                +--------------------------------------------------+
-                |
-                |      +---+---+       +---+---+       +---+---+
-                +--->  |   |   +---->  |   |   +---->  |   |   +---+
-                       +-+-+---+       +-+-+---+       +-+-+---+   |
-                         |               |               |         |
-                        \|/             \|/             \|/        |
-                         '               '               '         |
-                         b               c               d         |
-                               +-----------------------------------+
-                               |
-                               |       +---+---+       +---+---+
-                               +---->  |   |   +---->  |   |   +---+
-                                       +-+-+---+       +-+-+---+   |
-                                         |               |         |
-                                        \|/             \|/        |
-                                         '               '         |
-                                         c               d         |
-                                               +-------------------+
-                                               |
-                                               |       +---+---+
-                                               +---->  |   |   +---->  nil
-                                                       +-+-+---+
-                                                         |
-                                                        \|/
-                                                         '
-                                                         d
-
+v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +----> null
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
+         |               |               |               |
+        \|/             \|/             \|/             \|/
+         '               '               '               '
+         d               c               b               a
 
 \end{lstlisting}
 
 \subsection*{Задание35}
 \subsubsection*{Условие}
-count-pairs             
+count-pairs
 \subsubsection*{Решение}
-3                       
-\begin{lstlisting}      
-                        
+3
+\begin{lstlisting}
+
  +---+---+       +---+---+       +---+---+
- |   |   +---->  |   |   +---->  |   |   +---->  nil
+ |   |   +---->  |   |   +---->  |   |   +---->  null
  +-+-+---+       +-+-+---+       +-+-+---+
    |               |               |
   \|/             \|/             \|/
    '               '               '
    a               b               c
-                        
-\end{lstlisting}        
-4                       
-\begin{lstlisting}      
+
+\end{lstlisting}
+4
+\begin{lstlisting}
                    +---------------+
                    |              \|/
                    |               '
  +---+---+       +-+-+---+       +---+---+
- |   |   +---->  |   |   +---->  |   |   +---->  nil
+ |   |   +---->  |   |   +---->  |   |   +---->  null
  +-+-+---+       +-+-+---+       +-+-+---+
    |                               |
   \|/                             \|/
    '                               '
    a                               c
-                        
-\end{lstlisting}        
-7                       
-\begin{lstlisting}      
-                        
+
+\end{lstlisting}
+7
+\begin{lstlisting}
+
                    +---------------+
                    |              \|/
                    |               '
  +---+---+       +-+-+---+       +---+---+
- |   |   +---->  |   |   +---->  |   |   +---->  nil
+ |   |   +---->  |   |   +---->  |   |   +---->  null
  +-+-+---+       +---+---+       +-+-+---+
    |               ^               |
    |              /|\             \|/
    +---------------+               '
                                    c
-                        
-\end{lstlisting}        
-Никогда не завершится   
-\begin{lstlisting}      
+
+\end{lstlisting}
+Никогда не завершится
+\begin{lstlisting}
    +----------------------------------------+
   \|/                                       |
    '                                        |
@@ -279,28 +247,151 @@ count-pairs
   \|/             \|/             \|/
    '               '               '
    a               b               c
-                        
-\end{lstlisting}        
-                        
-                        
-                        
-\subsection*{Задание}   
+
+\end{lstlisting}
+
+
+
+\subsection*{Задание36}
+\subsubsection*{Условие}
+A correct version of the count-pairs.
+\subsubsection*{Решение}
+В моей версии пары, которые мы уже посчитали помещаются в список
+counted. Перед тем как учесть очередную пару проверяется есть ли она
+в списке counted. Если есть то не считаем её. Если нет то учитываем её
+и помещаем её в список counted.
+\begin{lstlisting}
+(define (in-list l x)
+  (cond ((null? l) 0)
+        ((eq? (car l) x) 1)
+        (else (in-list (cdr l) x))))
+
+(define (push l x)
+  (set-cdr! l (pair x '())))
+
+(define counted '())
+
+(define (count-pairs x)
+  (cond
+   ((not (pair? x)) 0)
+   ((in-list counted x) 0)
+   (else
+    (push counted x)
+    (+ (count-pairs (car x))
+            (count-pairs (cdr x))
+            1))))
+\end{lstlisting}
+
+\subsection*{Задание37}
+\subsubsection*{Условие}
+print-queue
+\subsubsection*{Решение}
+\begin{lstlisting}
+
+       +---+---+
+q--->  |   |   +-----------------------------------------+
+       +-+-+---+                                         |
+         |                                              \|/rear-ptr
+        \|/front-ptr                                     '
+         '
+       +---+---+       +---+---+       +---+---+       +---+---+
+       |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  null
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
+         |               |               |               |
+        \|/             \|/             \|/             \|/
+         '               '               '               '
+         a               b               c               d
+
+\end{lstlisting}
+Видно, что до последнего элемента можно дойти 2мя путями, поэтому
+интерпретатор печатает его дважды. \\
+Чтобы распечатать все элементы очереди без повторения достаточно
+просто просто распечатать список, на который указывает front-ptr, и не
+печатать хвост, на который указывает rear-ptr:
+\begin{lstlisting}
+(define (print-queue q) (pront-ptr q))
+\end{lstlisting}
+
+\subsection*{Задание38}
+\subsubsection*{Условие}
+queue как процедура с локальными состояниями
+\subsubsection*{Решение}
+\begin{lstlisting}
+(define (make-queue)
+  (let ((front-ptr '())
+        (rear-ptr '()))
+
+    (define (empty-queue?) (null? front-ptr))
+    (define (front-queue)
+      (if (empty-queue?)
+          (error "FRONT called with an empty queue")
+      (car front-ptr)))
+    (define (insert-queue!)
+      (lambda (item)
+        (let ((new-pair (cons item '())))
+          (cond ((empty-queue?)
+                 (set! front-ptr new-pair)
+                 (set! rear-ptr new-pair))
+                (else
+                 (set-cdr! rear-ptr new-pair)
+                 (set! rear-ptr new-pair))))))
+    (define (delete-queue!)
+      (cond ((empty-queue?)
+             (error "DELETE! called with an empty queue"))
+            (else
+             (set! front-ptr (cdr front-ptr))
+             queue)))
+
+    (define (dispatch m)
+      (cond
+       ((eq? m 'front-ptr) front-ptr)
+       ((eq? m 'rear-ptr) rear-ptr)
+       ((eq? m 'empty-queue?) (empty-queue?))
+       ((eq? m 'front-queue) (front-queue))
+       ((eq? m 'insert-queue!) (insert-queue!))
+       ((eq? m 'delete-queue!) (delete-queue!))
+       (else (error "Undefined operation -- QUEUE" m))))
+    dispatch))
+
+(define (front-ptr q) (q 'rear-ptr))
+(define (rear-ptr q) (q 'front-ptr))
+(define (empty-queue? q) (q 'empty-queue?))
+(define (front-queue q) (q 'front-queue))
+(define (insert-queue! q v) ((q 'insert-queue!) v))
+(define (delete-queue! q) (q 'delete-queue!))
+\end{lstlisting}
+
+\subsection*{Задание39}
+\subsubsection*{Условие}
+\subsubsection*{Решение}
+\begin{lstlisting}
+
+
+                                                          
+ |front-ptr                                              | rear-ptr
+ |                                                       |
+ |                                                      \|/ 
+ |                                                       '
+ |     +---+---+       +---+---+       +---+---+       +---+---+
+ +---> |   |   +---->  |   |   +---->  |   |   +---->  |   |   +---->  null
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
+         |               |               |               |
+        \|/             \|/             \|/             \|/
+         '               '               '               '
+       +---+---+       +---+---+       +---+---+       +---+---+
+null<--+   |   |  <----+   |   |  <----+   |   |  <----+   |   +
+       +-+-+---+       +-+-+---+       +-+-+---+       +-+-+---+
+             |               |               |               |
+            \|/             \|/             \|/             \|/
+             '               '               '               '
+             a               b               c               d
+
+\end{lstlisting}
+
+\subsection*{Задание40}
 \subsubsection*{Условие}
 \subsubsection*{Решение}
 \begin{lstlisting}
 \end{lstlisting}
-
-\subsection*{Задание}   
-\subsubsection*{Условие}
-\subsubsection*{Решение}
-\begin{lstlisting}
-\end{lstlisting}
-
-\subsection*{Задание}   
-\subsubsection*{Условие}
-\subsubsection*{Решение}
-\begin{lstlisting}
-\end{lstlisting}
-
 
 \end{document}
