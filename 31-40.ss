@@ -97,8 +97,7 @@
       (cond ((empty-queue?)
              (error "DELETE! called with an empty queue"))
             (else
-             (set! front-ptr (cdr front-ptr))
-             queue)))
+             (set! front-ptr (cdr front-ptr)))))
 
     (define (dispatch m)
       (cond
@@ -117,3 +116,86 @@
 (define (front-queue q) (q 'front-queue))
 (define (insert-queue! q v) ((q 'insert-queue!) v))
 (define (delete-queue! q) (q 'delete-queue!))
+
+
+;; dequeue
+
+;#lang planet neil/sicp
+(require (planet neil/sicp))
+
+(define (make-dequeue)
+  (let ((front-ptr '())
+        (back-ptr '()))
+
+    (define (empty-dequeue?) (null? front-ptr))
+    (define (front-dequeue)
+      (if (empty-dequeue?)
+          (error "FRONT called with an empty dequeue")
+          (car (car front-ptr))))
+    (define (back-dequeue)
+      (if (empty-dequeue?)
+          (error "FRONT called with an empty dequeue")
+          (car (car back-ptr))))
+    (define (insert-front-dequeue!)
+      (lambda (item)
+        (let ((new-bottom-pair (cons item '())))
+          (let ((new-top-pair (cons new-bottom-pair '())))
+            (cond ((empty-dequeue?)
+                   (set! front-ptr new-top-pair)
+                   (set! back-ptr new-top-pair))
+                  (else
+                   (set-cdr! new-bottom-pair (car front-ptr))
+                   (set-cdr! front-ptr new-top-pair)
+                   (set! front-ptr new-top-pair)))))))
+    (define (insert-back-dequeue!)
+      (lambda (item)
+        (let ((new-bottom-pair (cons item '())))
+          (let ((new-top-pair (cons new-bottom-pair back-ptr)))
+            (cond ((empty-dequeue?)
+                   (set! front-ptr new-top-pair)
+                   (set! back-ptr new-top-pair))
+                  (else
+                   (set-cdr! (car back-ptr) new-bottom-pair)
+                   (set! back-ptr new-top-pair)))))))
+    (define (delete-front-dequeue!)
+      (cond ((empty-dequeue?)
+             (error "DELETE! called with an empty queue"))
+            (else
+             (set! front-ptr (cdr front-ptr))
+             (if (not (null? front-ptr))
+                 (set-cdr! front-ptr '())))))
+    (define (delete-back-dequeue!)
+      (cond ((empty-dequeue?)
+             (error "DELETE! called with an empty queue"))
+            (else
+             (set! back-ptr (cdr back-ptr))
+             (if (not (null? back-ptr))
+                 (set-cdr! (car front-ptr) '())))))
+    (define (print-dequeue)
+      (if (empty-dequeue?) '()
+          (car front-ptr)))
+    
+    (define (dispatch m)
+      (cond
+       ((eq? m 'front-ptr) front-ptr)
+       ((eq? m 'back-ptr) back-ptr)
+       ((eq? m 'empty-dequeue?) (empty-dequeue?))
+       ((eq? m 'front-dequeue) (front-dequeue))
+       ((eq? m 'back-dequeue) (back-dequeue))
+       ((eq? m 'insert-front-dequeue!) (insert-front-dequeue!))
+       ((eq? m 'insert-back-dequeue!) (insert-back-dequeue!))
+       ((eq? m 'delete-front-dequeue!) (delete-front-dequeue!))
+       ((eq? m 'delete-back-dequeue!) (delete-back-dequeue!))
+       ((eq? m 'print-dequeue) (print-dequeue))
+       (else (error "Undefined operation -- QUEUE" m))))
+    dispatch))
+
+(define (front-ptr q) (q 'front-ptr))
+(define (back-ptr q) (q 'back-ptr))
+(define (empty-dequeue? q) (q 'empty-dequeue?))
+(define (front-dequeue q) (q 'front-dequeue))
+(define (insert-front-dequeue! q v) ((q 'insert-front-dequeue!) v))
+(define (insert-back-dequeue! q v) ((q 'insert-back-dequeue!) v))
+(define (delete-front-dequeue! q) (q 'delete-front-dequeue!))
+(define (delete-back-dequeue! q) (q 'delete-back-dequeue!))
+(define (print-dequeue q) (q 'print-dequeue))
