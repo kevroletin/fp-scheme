@@ -8,7 +8,7 @@
 \usepackage[russian]{babel}
 \usepackage{listings}
 \author{Кевролетин В.В. 236гр.}
-\title{$\lambda$-исчисление}
+\title{Scheme}
 \begin{document}
 
 \maketitle
@@ -26,15 +26,15 @@ $f(1)+f(2)\not =f(2)+f(1)$. Объяснить причину такого по�
   count)
 \end{lstlisting}
 
-Результат, возвращаемый описанной выше функции f(x) зависит от
+Результат возвращаемый описанной выше функции f(x) зависит от
 глобальной переменной
 count, значение которой меняется в теле этой же функции. Поэтому
-результат функции зависит не только от переданного ей аргумента, но и
+результат  зависит не только от переданного ей аргумента, но и
 от
 последовательности предыдущих вызовов f(x).
-$f(1)+f(2)\not =f(2)+f(1)$ несмотря на коммутативность сложения,
+$f(1)+f(2)\not =f(2)+f(1)$
 потому что в первом случае сначала вычисляется f(1) а потом f(2), а во
-втором случае наоборот.
+втором случае наоборот: разный порядок выполнения - разные значения.
 
 \subsection*{Задание32}
 \subsubsection*{Условие}
@@ -54,7 +54,7 @@ Show that the two versions of make-withdraw create objects with the
 same behavior. How do the environment structures differ for the two
 versions?
 \subsubsection*{Решение}
-
+\newpage
 \lstset{ %
 basicstyle=\footnotesize,       % the size of the fonts that are used for the code
 frame=single
@@ -133,7 +133,7 @@ z-->  |   |   +---->  |   |   +---->  |   |   +---->  null
 
 \end{lstlisting}
 
-Станет:
+Станет:\newpage
 \begin{lstlisting}
 
         +------------------------------------------+
@@ -188,6 +188,25 @@ v-->   |   |   +---->  |   |   +---->  |   |   +---->  |   |   +----> null
          '               '               '               '
          d               c               b               a
 
+\end{lstlisting}
+После вызова (mystery '(a b c d))  Параметры x, y внутренней процедуры
+изменяются следующим образом(первая строка - x, вторая - y, пустая строка
+- разделение последовательных рекурсивных вызовов): \\
+\begin{lstlisting}
+(a b c d) 
+()
+
+(b c d)
+(a)
+
+(c d)
+(b a)
+
+(d)
+(c b a)
+
+()
+(d c b a)
 \end{lstlisting}
 
 \subsection*{Задание35}
@@ -261,20 +280,20 @@ counted. Перед тем как учесть очередную пару пр�
 в списке counted. Если есть то не считаем её. Если нет то учитываем её
 и помещаем её в список counted.
 \begin{lstlisting}
-(define (in-list l x)
+(define (in-list? l x)
   (cond ((null? l) 0)
         ((eq? (car l) x) 1)
-        (else (in-list (cdr l) x))))
+        (else (in-list? (cdr l) x))))
 
 (define (push l x)
-  (set-cdr! l (pair x '())))
+  (set! l (cons x l)))
 
 (define counted '())
 
 (define (count-pairs x)
   (cond
    ((not (pair? x)) 0)
-   ((in-list counted x) 0)
+   ((in-list? counted x) 0)
    (else
     (push counted x)
     (+ (count-pairs (car x))
@@ -309,7 +328,7 @@ q--->  |   |   +-----------------------------------------+
 просто просто распечатать список, на который указывает front-ptr, и не
 печатать хвост, на который указывает rear-ptr:
 \begin{lstlisting}
-(define (print-queue q) (pront-ptr q))
+(define (print-queue q) (front-ptr q))
 \end{lstlisting}
 
 \subsection*{Задание38}
@@ -339,8 +358,7 @@ queue как процедура с локальными состояниями
       (cond ((empty-queue?)
              (error "DELETE! called with an empty queue"))
             (else
-             (set! front-ptr (cdr front-ptr))
-             queue)))
+             (set! front-ptr (cdr front-ptr)))))
 
     (define (dispatch m)
       (cond
@@ -359,6 +377,23 @@ queue как процедура с локальными состояниями
 (define (front-queue q) (q 'front-queue))
 (define (insert-queue! q v) ((q 'insert-queue!) v))
 (define (delete-queue! q) (q 'delete-queue!))
+
+;; tests
+
+(define q (make-queue))
+(insert-queue! q 1)
+(rear-ptr q) ;; (1)
+(insert-queue! q 2)
+(insert-queue! q '(a b c))
+(rear-ptr q) ;; (1 2 (a b c))
+(delete-queue! q)
+(rear-ptr q) ;; (2 (a b c))
+(delete-queue! q)
+(delete-queue! q)
+(rear-ptr q) ;; ()
+(insert-queue! q 1)
+(rear-ptr q) ;; (1)
+
 \end{lstlisting}
 
 \subsection*{Задание39}
@@ -367,7 +402,8 @@ deque
 \subsubsection*{Решение}
 Для одного элемента надо хранить 2 указателя: на следующий и
 предыдущий элемент. Для этого будем в паре хранить данные и другую
-пару, в которой будут содержаться ссылки на предыдущий и следующий элемент:
+пару, в которой будут содержаться ссылки на предыдущий и следующий
+элемент:
 \begin{lstlisting}
 
 front-ptr                                                   back-ptr
@@ -443,7 +479,7 @@ front-ptr                                                   back-ptr
              (if (not (null? back-ptr))
                  (set-cdr! (cdr back-ptr) '())))))
     (define (print-dequeue back-node result)
-      (if (null? back-node) '(result)
+      (if (null? back-node) result
           (let ((new-res (cons (car back-node) result)))
             (print-dequeue (car (cdr back-node)) new-res))))
     
@@ -458,8 +494,8 @@ front-ptr                                                   back-ptr
        ((eq? m 'insert-back-dequeue!) (insert-back-dequeue!))
        ((eq? m 'delete-front-dequeue!) (delete-front-dequeue!))
        ((eq? m 'delete-back-dequeue!) (delete-back-dequeue!))
-       ((eq? m 'print-dequeue) (print-dequeue back-ptr))
-       (else (error "Undefined operation -- QUEUE" m))))
+       ((eq? m 'print-dequeue) (print-dequeue back-ptr '()))
+       (else (error "Undefined operation -- DEQUEUE" m))))
     dispatch))
 
 (define (front-ptr q) (q 'front-ptr))
@@ -472,13 +508,65 @@ front-ptr                                                   back-ptr
 (define (delete-back-dequeue! q) (q 'delete-back-dequeue!))
 (define (print-dequeue q) (q 'print-dequeue))
 
+;; tests
+
+(define d (make-dequeue))
+(insert-front-dequeue! d 1)
+(insert-back-dequeue! d 2)
+(print-dequeue d) ;; (1 2)
+(insert-front-dequeue! d 0)
+(insert-back-dequeue! d 3)
+(print-dequeue d) ;; (0 1 2 3)
+(delete-back-dequeue! d)
+(print-dequeue d) ;; (0 1 2)
+(delete-front-dequeue! d)
+(print-dequeue d) ;; (1 2)
+
 \end{lstlisting}
 
 
 \subsection*{Задание40}
 \subsubsection*{Условие}
-\subsubsection*{Решение}
+Consider the sequence of expressions
 \begin{lstlisting}
+(define sum 0)
+(define (accum x)
+(set! sum (+ x sum))
+sum)
+(define seq (stream-map accum (stream-enumerate-interval 1 20)))
+(define y (stream-filter even? seq))
+(define z (stream-filter (lambda (x) (= (remainder x 5) 0))
+seq))
+(stream-ref y 7)
+(display-stream z)
 \end{lstlisting}
-
+What is the value of sum after each of the above expressions is evaluated? Wha is the printed response to evaluating the stream-ref and display-stream expressions? Would these responses differ if we had implemented (delay < exp >) simly as (lambda () < exp >) without using the optimization provided by memo-proc? Explain. 
+\subsubsection*{Решение}
+После выполнения 
+\begin{lstlisting}
+(define seq (stream-map accum
+(stream-enumerate-interval 1 20))) 
+\end{lstlisting}
+значение sum становится равным 210
+и не меняется выполнение остальных выражений 
+\begin{lstlisting}
+(stream-ref y 7) ;; -> 136
+(display-stream z) ;; -> 
+10
+15
+45
+55
+105
+120
+190
+210done 
+\end{lstlisting}
+Если убрать оптимизацию, которая запоминает результат выполнения
+функции, производящей элементы потока, то результат выполнения будет
+отличаться, так как для доступа к элементам списка каждый раз будет
+вызываться эта функция. Так как в её теле присваивается
+значения глобальной переменной и используется это значение для получения
+результата, то результат выполнения функции будет зависить от 
+последовательности предыдущих вызовов.  \\
+Поэтому результат выполнения тех же выражений будет отличаться.
 \end{document}

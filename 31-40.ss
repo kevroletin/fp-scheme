@@ -1,3 +1,23 @@
+;#lang planet neil/sicp
+(require (planet neil/sicp))
+
+(define (make-withdraw initial-amount)
+  (let ((balance initial-amount))
+    (lambda (amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))))
+
+(define (make-withdraw initial-amount)
+  (let ((balance initial-amount))
+    (lambda (amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))))
+
+(define a (make-withdraw 100))
 
 ;; 31
 
@@ -63,6 +83,12 @@
 
 (define (mystery x)
   (define (loop x y)
+    (newline)
+;;    (print  "x: ")
+    (print x)
+    (newline)
+;;    (print  "y: ")
+    (print y)
     (if (null? x)
         y
         (let ((temp (cdr x)))
@@ -117,11 +143,23 @@
 (define (insert-queue! q v) ((q 'insert-queue!) v))
 (define (delete-queue! q) (q 'delete-queue!))
 
+; tests
+
+(define q (make-queue))
+(insert-queue! q 1)
+(rear-ptr q) ;; (1)
+(insert-queue! q 2)
+(insert-queue! q '(a b c))
+(rear-ptr q) ;; (1 2 (a b c))
+(delete-queue! q)
+(rear-ptr q) ;; (2 (a b c))
+(delete-queue! q)
+(delete-queue! q)
+(rear-ptr q) ;; ()
+(insert-queue! q 1)
+(rear-ptr q) ;; (1)
 
 ;; dequeue
-
-;#lang planet neil/sicp
-(require (planet neil/sicp))
 
 (define (make-dequeue)
   (let ((front-ptr '())
@@ -173,7 +211,7 @@
              (if (not (null? back-ptr))
                  (set-cdr! (cdr back-ptr) '())))))
     (define (print-dequeue back-node result)
-      (if (null? back-node) '(result)
+      (if (null? back-node) result
           (let ((new-res (cons (car back-node) result)))
             (print-dequeue (car (cdr back-node)) new-res))))
     
@@ -188,8 +226,8 @@
        ((eq? m 'insert-back-dequeue!) (insert-back-dequeue!))
        ((eq? m 'delete-front-dequeue!) (delete-front-dequeue!))
        ((eq? m 'delete-back-dequeue!) (delete-back-dequeue!))
-       ((eq? m 'print-dequeue) (print-dequeue back-ptr))
-       (else (error "Undefined operation -- QUEUE" m))))
+       ((eq? m 'print-dequeue) (print-dequeue back-ptr '()))
+       (else (error "Undefined operation -- DEQUEUE" m))))
     dispatch))
 
 (define (front-ptr q) (q 'front-ptr))
@@ -201,3 +239,93 @@
 (define (delete-front-dequeue! q) (q 'delete-front-dequeue!))
 (define (delete-back-dequeue! q) (q 'delete-back-dequeue!))
 (define (print-dequeue q) (q 'print-dequeue))
+
+;; tests
+
+(define d (make-dequeue))
+(insert-front-dequeue! d 1)
+(insert-back-dequeue! d 2)
+(print-dequeue d) ;; (1 2)
+(insert-front-dequeue! d 0)
+(insert-back-dequeue! d 3)
+(print-dequeue d) ;; (0 1 2 3)
+(delete-back-dequeue! d)
+(print-dequeue d) ;; (0 1 2)
+(delete-front-dequeue! d)
+(print-dequeue d) ;; (1 2)
+
+;; streams
+
+(define the-empty-stream 'the-empty-stream)
+(define (stream-null? s) (eq? s the-empty-stream))
+
+(define (sum-primes a b)
+  (define (iter count accum)
+    (cond ((> count b) accum)
+          ((prime? count) (iter (+ count 1) (+ count accum)))
+          (else (iter (+ count 1) accum))))
+  (iter a 0))
+
+(define (stream-enumerate-interval low high)
+  (if (> low high)
+      the-empty-stream
+      (cons-stream
+       low
+       (stream-enumerate-interval (+ low 1) high))))
+
+(define (stream-filter pred stream)
+  (cond ((stream-null? stream) the-empty-stream)
+        ((pred (stream-car stream))
+         (cons-stream (stream-car stream)
+                      (stream-filter pred
+                                     (stream-cdr stream))))
+        (else (stream-filter pred (stream-cdr stream)))))
+
+(define (stream-ref s n)
+  (if (= n 0)
+      (stream-car s)
+      (stream-ref (stream-cdr s) (- n 1))))
+(define (stream-map proc s)
+  (if (stream-null? s)
+      the-empty-stream
+      (cons-stream (proc (stream-car s))
+                   (stream-map proc (stream-cdr s)))))
+(define (stream-for-each proc s)
+  (if (stream-null? s)
+      'done
+      (begin (proc (stream-car s))
+             (stream-for-each proc (stream-cdr s)))))
+
+(define (display-stream s)
+  (stream-for-each display-line s))
+
+(define (display-line x)
+  (newline)
+  (display x))
+
+(define (stream-car stream) (car stream))
+(define (stream-cdr stream)
+  (force  (cdr stream)))
+(define (cons-stream a b)
+  (cons a (delay b)))
+
+;;
+
+(define sum 0)
+(define (accum x)
+  (set! sum (+ x sum))
+  sum)
+(define seq (stream-map accum (stream-enumerate-interval 1 20))) ;;sum210
+(define y (stream-filter even? seq));;sum210
+(define z (stream-filter (lambda (x) (= (remainder x 5) 0))
+                         seq))
+(stream-ref y 7) ;;136
+(display-stream z)
+;10
+;15
+;45
+;55
+;105
+;120
+;190
+;210done
