@@ -54,7 +54,7 @@ make-monitored
 (sm 'how-many) ;; > 0
 \end{lstlisting}
 
-\subsection*{Задание30}
+\subsection*{Задание29}
 \subsubsection*{Условие}
 make-account-pass
 \subsubsection*{Решение}
@@ -96,8 +96,9 @@ make-account-pass
 ((acc 'deposit 'bad-passw) 10)   ;; > "Wrond password"
 ((acc 'deposit 'bad-passw) 10)   ;; > "Access denided!"
 ((acc 'withdraw 'good-passw) 20) ;; > "Access denided!"
+\end{lstlisting}
 
-\subsection*{Задание30}
+\subsection*{Задание29}
 \subsubsection*{Условие}
 make-account-pass
 \subsubsection*{Решение}
@@ -140,8 +141,8 @@ make-account-pass
 ((acc 'deposit 'good-passw) 10)  ;; > 90
 ((acc 'deposit 'bad-passw) 10)   ;; > "Wrond password"
 ((acc 'deposit 'bad-passw) 10)   ;; > "Wrond password"
-((acc 'deposit 'bad-passw) 10)   ;; > "Access denided!"
-((acc 'withdraw 'good-passw) 20) ;; > "Access denided!"
+((acc 'deposit 'bad-passw) 10)   ;; > "Hey, you! Put your hands up!!!"
+((acc 'withdraw 'good-passw) 20) ;; > "Hey, you! Put your hands up!!!"
 
 \end{lstlisting}
 

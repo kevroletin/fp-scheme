@@ -1,0 +1,49 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[russian]{babel}
+\author{Кевролетин В.В. 236гр.}
+\title{$\lambda$-исчисление}
+\begin{document}
+
+\maketitle
+
+\subsection*{Задание1}
+\subsubsection*{Условие}
+Подробно расписать преобразования:\\
+$(\lambda xy.L)MN$, \textit{где $y$ свободно входит в $M$}
+\subsubsection*{Решение}
+
+\begin{enumerate}
+  \item $(\lambda xy.L) \longrightarrow_\alpha (\lambda xz.L[z|y])$
+  \item $(\lambda xz.L[z|y]) = (\lambda x.(\lambda z.L[z|y])M)N \longrightarrow_\beta
+(\lambda x.L[z|y][M|z])N$
+  \item $(\lambda x.L[z|y][M|z])N \longrightarrow_\beta L[z|y][M|z][N|x]$
+\end{enumerate}
+
+\subsection*{Задание2}
+\subsubsection*{Условие}
+Привести к нормальной форме 2мя способами:\\
+$(\lambda x.(\lambda y.xy)z)y$
+\subsubsection*{Решение}
+
+\begin{enumerate}
+  \item $(\lambda x.(\lambda y.xy)z)y \longrightarrow_\eta (\lambda
+    x.xz)y \longrightarrow_\beta yz$
+  \item $(\lambda x.(\lambda y.xy)z)y \longrightarrow_\beta (\lambda
+    x.xz)y \longrightarrow_\beta yz$
+\end{enumerate}
+
+\subsection*{Задание3}
+\subsubsection*{Условие}
+Привести к нормальной форме:\\
+$(\lambda x.xxy)(\lambda x.xxy)$
+\subsubsection*{Решение}
+$(\lambda x.xxy)(\lambda x.xxy) \longrightarrow_\beta  (\lambda
+x.xxy)(\lambda x.xxy)y \longrightarrow_\beta (\lambda
+x.xxy)yyy \longrightarrow_\beta yyyy$
+
+\end{document}
