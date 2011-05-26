@@ -1,4 +1,3 @@
-
 \documentclass[10pt,a4paper]{article}
 \usepackage[utf8x]{inputenc}
 \usepackage{ucs}
@@ -23,6 +22,7 @@ $A \equiv \lambda xy.y(xxy) \\
 \rightarrow_\beta 
 F((\lambda xy.y(xxy))(\lambda xy.y(xxy))F) \equiv F (\Theta F) $
 
+% спасибо Подольскому Леониду
 \subsection*{Задание11}
 \subsubsection*{Условие}
 Выяснить, разрешимы и определены ли термы? \\
@@ -40,32 +40,69 @@ n\\
 Терм в головной нормальной форме имеет вид $\lambda x_1
 ... x_n.yM_1..M_k\ (m, k >= 0)$ 
 \begin{enumerate}
+
 \item
-$Y \equiv (\lambda f.\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow
-\lambda f.f(\lambda x.f(xx))(\lambda x.f(xx)) \rightarrow \ldots $\\
-не определён \\
+$Y \equiv \lambda f.(\lambda x.f(xx))(\lambda x.f(xx))
+\rightarrow \lambda f.(f((\lambda x.f(xx))(\lambda x.f(xx)))) =
+\lambda f.f(MM)$  \\
+
+$\lambda f.f(MM) \equiv \lambda x_1...x_m.yM_1...M_k $
+при $m = 1, x_1 = f, 
+y = f, k = 1, M_1 = (MM)$ \\
+Ответ: определен. 
+
 \item
-$Y\ not \rightarrow not\ ( Y\ not) \rightarrow \ldots$ \\
-не определён \\
+$Y \mspace{5mu} not \rightarrow (\lambda x.not(xx)) (\lambda
+x.not(xx)) \rightarrow not (VV) =  
+if \mspace{5mu} (VV) \mspace{5mu} true \mspace{5mu} false \rightarrow
+\\ (VV) \mspace{5mu} true \mspace{5mu} 
+false = ((\lambda x.not(xx)) (\lambda x.not(xx))) true \mspace{5mu} false$ \\
+Возможна головная редукция, проведение которой уже осуществлялось на
+1-м шаге преобразования. Т.к. других редукция для данного терма нет,
+терм не имеет ГНФ. \\ 
+Ответ: неопределен.
+
 \item
-$K \equiv \lambda xy.x$ - в головной нормальной форме\\
-определён \\
+$K = \lambda xy.x \equiv \lambda x_1...x_m.yM_1...M_k $
+при $m = 2, x_1 = x, x_2 = y, k = 0, y = x$. \\
+Ответ: определён.
+
 \item
-$Y\ I \rightarrow I\ (Y\ I) \rightarrow Y\ I\ \rightarrow \ldots$\\
-не определён \\
+$I = \lambda x.x \equiv \lambda x_1...x_m.yM_1...M_k $
+при $m = 1, x_1 = x, k = 0, y = x$. \\
+Ответ: определён.
 \item
-$x \Omega $ \\
-$\Omega$ не имеет нормальной формы\\
-не определён \\
+$YI \rightarrow (\lambda x.I(xx)(\lambda x.I(xx))) \rightarrow I(FF) =
+(\lambda z.z)(FF) \rightarrow 
+(FF) = (\lambda x.I(xx)(\lambda x.I(xx)))$ \\
+Терм не находится в ГНФ, так как возможна головная редукция,
+осуществленная на шаге 1. Других редукций не существует. \\ 
+Ответ: неопределён.
+
 \item
-$YK \rightarrow K(YK) \rightarrow K(K(YK)) \rightarrow \ldots  $\\
-не определён \\
+ $x \Omega = x(\lambda z.(zz)\lambda z.(zz)) \equiv \lambda
+ x_1...x_m.yM_1...M_k $ 
+при $m = 0, k = 1, y = x, M_1 = \Omega$ \\
+Ответ: определён.
+
 \item
-$Y(K\ x) \rightarrow K\ x\ (Y\ (K\ x)) \rightarrow x$ \\
-определён \\
+ $Y(Kx) = Y((\lambda zy.z)x) \rightarrow Y(\lambda y.x) \rightarrow Yx =
+(\lambda z.x(zz))(\lambda z.x(zz)) \rightarrow x(NN) \equiv \lambda
+x_1...x_m.yM_1...M_k$ 
+при $m = 0, k = 1, y = x, M_1 = (NN).$ \\
+Ответ: определён.
+
 \item
-$n$ - в нормальной форме \\
-определён \\
+$YK \rightarrow (\lambda x.K(xx))(\lambda x.K(xx)) \rightarrow
+K(CC) = \lambda xy.x(CC) \equiv \lambda x_1...x_m.yM_1...M_k $
+при $m = 2, k = 1, x_1 = x, x_2 = y, y = x, M_1 = (CC).$ \\
+Ответ: определён.
+
+\item
+ $ n \equiv\lambda fx.f^n x = \lambda fx.f(f^{n-1}) \equiv \lambda
+ x_1...x_m.yM_1...M_k $ 
+при $m = 2, k = 1, x_1 = f, x_2 = x, y = f, M_1 = (f^{n-1}).$ \\
+Ответ: определён.
 \end{enumerate}
 
 \subsection*{Задание12}

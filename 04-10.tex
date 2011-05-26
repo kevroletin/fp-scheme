@@ -53,7 +53,7 @@ $expt \equiv \lambda mnfx.mnfx$
 \item 
 $(mult\ m\ n) \longrightarrow \lambda fx.m(nf)x \longrightarrow 
 \lambda fx.\underbrace{nf(nf(\ldots \overbrace
-{nf(nfx}^\text{=n+n}}_\text{n times})\ldots) = \lambda
+{nf(nfx}^\text{=n+n}}_\text{m times})\ldots) = \lambda
 fx.\underbrace{f(f(\ldots f(fx}_{n \cdot m\ times})\ldots) \equiv
 n\cdot m$ 
 
@@ -129,8 +129,9 @@ $ack\ 0\ n \equiv \lambda m.m(\lambda fn.nf(f\ 1))suc\ 0\ n \rightarrow
 $ack\ (m\,+\,1)\ n \rightarrow (\lambda m.m(\lambda fn.nf(f\ 1))suc)\
 (m\,+\,1)\ n \rightarrow (m\,+\,1)(\lambda fn.nf(f\ 1))suc\ n
 \rightarrow (\lambda fn.nf(f\ 1))(m\ \lambda fn.nf(f\ 1) suc) n = (\lambda
-fn.nf(f\ 1))(ack\ m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ \item
-$ ack (m+1)\ 0 \rightarrow 0 ack\ (m+1) (ack\ m\ 1) \rightarrow ack\
+fn.nf(f\ 1))(ack\ m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ 
+\item
+$ ack (m+1)\ 0 \rightarrow 0\ (ack\ (m+1)) (ack\ m\ 1) \rightarrow ack\
 m\ 1  $
 \item
 $ack(m+1)(n+1) \rightarrow n+1\ (ack\ m)(ack\ m\ n) \rightarrow ack\
