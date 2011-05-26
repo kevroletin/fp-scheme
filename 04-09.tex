@@ -44,36 +44,19 @@ $=$ имеем: P=Q, а в силу произвольности выбора P 
 
 \subsection*{Задание6}
 \subsubsection*{Условие}
-Показать, что операции умножения и возведения в степень выглядят
+Показать, что операция возведения в степень выглядят
 следующим образом:\\
-$mult \equiv \lambda mnfx.m(nf)x$\\
-$expt \equiv \lambda mnfx.mnfx$
+$expt \equiv \lambda mnfx.nmfx$
 \subsubsection*{Решение}
-\begin{enumerate}
-\item 
-$(mult\ m\ n) \longrightarrow \lambda fx.m(nf)x \longrightarrow 
-\lambda fx.\underbrace{nf(nf(\ldots \overbrace
-{nf(nfx}^\text{=n+n}}_\text{m times})\ldots) = \lambda
-fx.\underbrace{f(f(\ldots f(fx}_{n \cdot m\ times})\ldots) \equiv
-n\cdot m$ 
-
-\item
 $
-(expt\ n\ m) \equiv (\lambda mnfx.mnfx) \rightarrow 
-(\lambda mnfx.m^nfx) \equiv m^n
+(expt\ m\ n) \equiv (\lambda mnfx.nmfx)\ m \ n \rightarrow 
+(\lambda fx.n(f^m)x) \rightarrow 
+(\lambda fx.\underbrace{(f^m(f^m(... (f^m}_{n\ times} x)...)))  \equiv
+(\lambda fx.f^{m^n}x)
+\equiv m^n
 $
-
-\end{enumerate}
 
 \subsection*{Задание7}
-\subsubsection*{Условие}
-Показать: $(\lambda mn.m\,suc\,n)mn \longrightarrow m+n $
-\subsubsection*{Решение}
- $(\lambda mn.m\,suc\,n)mn \longrightarrow m\,suc\,n
-\longrightarrow \underbrace{ suc(suc(suc \ldots suc(}_{m\ times}n)
-\ldots ) \longrightarrow \underbrace{ suc(suc \ldots suc(}_{m-1\
-  times}{n\!+\!1}) \ldots ) \longrightarrow n + m $
-\subsection*{Задание8}
 \subsubsection*{Условие}
 Показать, чт:о
 \begin{enumerate}
@@ -96,22 +79,20 @@ $
  N)) \longrightarrow M$ 
 \end{enumerate}
 
-\subsection*{Задание9}
+% спасибо Васильевой Лене
+\subsection*{Задание8}
 \subsubsection*{Условие}
 Представить натуральные числа при помощи списков. Ввести несколько операций.
 \subsubsection*{Решение}
-$0 - false \equiv \lambda z.z \\
-1 - (pair\ true\ false) \\
-\ldots \\
-n - (pair\ true\ {n\!-\!1})\\
-iszero \equiv \lambda z.(not\ (first\ z)) \\
-suc \equiv \lambda z.(pair\ true\ z) \\
-sum \equiv Y(\lambda\ gmn.(if\ (fst\ n)\ (pair\ (fst\ n)\ (g\ (snd\ n)\
-m))\ m)) \\
-$
+$0 = nil$\\
+$1 = cons\ nil\ nil$\\
+$n + 1 = cons\ n\ nil$\\
+$n + m = \underbrace{cons (cons(}_{m\ times}...cons (n\ nil)... )
+nil)$ \\
+$n - 1 = tail\ n$\\
+$n - m = \underbrace{tail (tail(}_{m\ times}...tail\  n)... )$ \\
 
-
-\subsection*{Задание10}
+\subsection*{Задание9}
 \subsubsection*{Условие}
 Функция Акермана имеет следующее рекурсивное определение: \\
 $ack\ 0\ n = n + 1 \\
@@ -123,19 +104,19 @@ $ack \equiv \lambda m.m(\lambda fn.nf(f\ 1))suc$
 \subsubsection*{Решение}
 \begin{enumerate}
 \item
-$ack\ 0\ n \equiv \lambda m.m(\lambda fn.nf(f\ 1))suc\ 0\ n \rightarrow
-0(\lambda fn.nf(f\ 1))suc\ n \rightarrow suc n \equiv (n\,+\,1)$
+$ack\ 0\ n \equiv (\lambda m.m(\lambda fn.nf(f\ 1))suc)\ 0\ n \rightarrow
+0(\lambda fn.nf(f\ 1))suc\ n \rightarrow suc\ n \equiv (n\,+\,1)$
 \item
 $ack\ (m\,+\,1)\ n \rightarrow (\lambda m.m(\lambda fn.nf(f\ 1))suc)\
 (m\,+\,1)\ n \rightarrow (m\,+\,1)(\lambda fn.nf(f\ 1))suc\ n
 \rightarrow (\lambda fn.nf(f\ 1))(m\ \lambda fn.nf(f\ 1) suc) n = (\lambda
 fn.nf(f\ 1))(ack\ m) n \rightarrow n(ack\ m)(ack\ m\ 1) $ 
 \item
-$ ack (m+1)\ 0 \rightarrow 0\ (ack\ (m+1)) (ack\ m\ 1) \rightarrow ack\
+$ ack (m+1)\ 0 \rightarrow 0\ (ack\ m) (ack\ m\ 1) \rightarrow ack\
 m\ 1  $
 \item
 $ack(m+1)(n+1) \rightarrow n+1\ (ack\ m)(ack\ m\ n) \rightarrow ack\
-m(n(ack\ m)(ack\ m\ 1))) = ack (ack(m+1)n)$
+m(n(ack\ m)(ack\ m\ 1))) = ack\ m\  (ack(m+1)n)$
 \end{enumerate}
 
 \end{document}
