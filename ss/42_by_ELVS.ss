@@ -1,0 +1,41 @@
+#lang racket
+(require srfi/41)
+
+(define ones (stream-cons 1 ones))
+(define (add-streams s1 s2)
+  (stream-map + s1 s2))
+(define integers (stream-cons 1 (add-streams ones integers)))
+(define (scale-stream stream factor)
+  (stream-map (lambda (x) (* x factor)) stream))
+(define (interleave s1 s2)
+  (if (stream-null? s1)
+      s2
+      (stream-cons (stream-car s1)
+                   (interleave s2 (stream-cdr s1)))))
+(define (pairs s t)
+  (stream-cons
+   (list (stream-car s) (stream-car t))
+   (interleave
+    (stream-map (lambda (x) (list (stream-car s) x))
+                (stream-cdr t))
+    (pairs (stream-cdr s) (stream-cdr t)))))
+(define (find s i j k) 
+  (if (and (= (car (stream-car s)) i)
+           (= (cadr (stream-car s)) j))
+      k
+      (begin (display (car (stream-car s)))
+             (display " ")
+             (display (cadr (stream-car s)))
+             (display " ")
+             (display k)
+             (newline)
+             (find (stream-cdr s) i j (+ k 1))))  
+ )
+(define (find-pair i j)
+  (if (> i j)
+      #f
+ (find (pairs integers integers) i j 0)
+  ))
+;(find-pair 15 26)
+(find-pair 6 10)
+;(find-pair 100 100)
