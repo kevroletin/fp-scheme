@@ -1,5 +1,5 @@
 ;#lang planet neil/sicp
-(require (planet neil/sicp))
+ (require (planet neil/sicp))
 
 (define (make-withdraw initial-amount)
   (let ((balance initial-amount))
